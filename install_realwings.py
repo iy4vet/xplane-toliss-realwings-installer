@@ -964,17 +964,20 @@ def main() -> None:
         edited_any_xp12 = True
         print(f"\n  {acf_path.name}:")
 
-        # Detect Carda
-        carda_objs = editor.find_carda_engine_objects()
-        if carda_objs:
-            carda_present_in_any_acf = True
-
         # Wing object swap (always purge all known RealWings filenames so
         # switching variant on a re-run leaves no stale entries).
         removed, _already = editor.remove_and_add_objects(
             filenames_to_remove=config.stock_wing_objs + all_known,
             objects_to_add=realwings_objects,
         )
+
+        # Detect Carda *after* the wing swap: remove_and_add_objects()
+        # re-indexes the entire _obja/* keyspace, so any indices captured
+        # before that call would be stale and update_object_coords() below
+        # would write to the wrong slots.
+        carda_objs = editor.find_carda_engine_objects()
+        if carda_objs:
+            carda_present_in_any_acf = True
         stock_removed = [n for n in removed if n in config.stock_wing_objs]
         rw_refreshed = [n for n in removed if n in active_filenames]
         stale_removed = [

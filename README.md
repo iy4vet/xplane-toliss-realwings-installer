@@ -2,7 +2,7 @@
 
 Installer script for the [RealWings319](https://forums.x-plane.org/files/file/99042-realwings319-wing-replacement-mod-for-toliss-a319/), [RealWings320](https://forums.x-plane.org/files/file/99352-realwings320-wing-replacement-mod-for-toliss-a320neo/) and [RealWings321](https://forums.x-plane.org/files/file/99442-realwings321-wing-replacement-mod-for-toliss-a321neoceo) wing-replacement mods by [GeoBuilds](https://forums.x-plane.org/profile/962966-geobuilds/) and [Durantula2405](https://forums.x-plane.org/profile/843947-durantula2405/). Handles all `.acf` and `.obj` edits so you don't have to do them by hand.
 
-If you also use the Carda engine mods (CFM56, V2500, LEAP-1A, PW1100G), this installer **auto-detects them and fixes them too** - no need to redo the engine coordinates or run a separate Carda-RealWings fork.
+If you also use the Carda engine mods (CFM56, V2500, LEAP-1A, PW1100G), this installer **auto-detects them and fixes them too** - no need to redo the engine coordinates or run a separate Carda-RealWings fork. The companion [ToLiss Carda installer](https://github.com/iy4vet/xplane-toliss-carda-installer) handles the Carda side and is highly recommended, since RealWings barely aligns with the default ToLiss engines.
 
 ## What the installer does
 
