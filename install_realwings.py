@@ -199,18 +199,15 @@ class A319Config(AircraftConfig):
 
 
 class A320Config(AircraftConfig):
-    """ToLiss A320 (neo + ceo).  RealWings320 mod (+ RealWings319 for ceo flaps).
+    """ToLiss A320 (neo + ceo).  RealWings320 mod (CEO + NEO subfolders merged).
 
     Stock wing OBJs: wingR.obj, wingL.obj, wings_glass.obj  (no '320' suffix).
     Frames/Lines: 'Frames320.obj' / 'Lines320.obj'.
 
-    Variants:
+    Variants (from the merged 'CEO' + 'NEO' subfolder contents):
       - neo:           MainNEO + GlassNEO + SecondaryNEO + FlapsNEO
-      - ceo-sharklets: MainNEO + GlassNEO + SecondaryNEO + Flaps     (Flaps comes
-                                                                     from RealWings319)
-      - ceo-wingtips:  Main    + Glass    + Secondary    + Flaps     (Main/Glass/
-                                                                     Secondary also
-                                                                     from RealWings319)
+      - ceo-sharklets: MainNEO + GlassNEO + SecondaryNEO + Flaps
+      - ceo-wingtips:  Main    + Glass    + Secondary    + Flaps
     """
 
     name = "A320"
@@ -230,13 +227,13 @@ class A320Config(AircraftConfig):
             ),
             WingVariant(
                 key="ceo-sharklets",
-                label="CEO with sharklets (needs RealWings319 'Flaps' merged in)",
+                label="CEO with sharklets",
                 body_objs=["MainNEO.obj", "GlassNEO.obj", "SecondaryNEO.obj"],
                 flaps_obj="Flaps.obj",
             ),
             WingVariant(
                 key="ceo-wingtips",
-                label="CEO with wingtips (needs RealWings319 OBJs merged in)",
+                label="CEO with wingtips",
                 body_objs=["Main.obj", "Glass.obj", "Secondary.obj"],
                 flaps_obj="Flaps.obj",
             ),
@@ -728,28 +725,23 @@ def fix_carda_engine_objs(obj_dir: Path) -> None:
 # ─── Auto-install RealWings source files ─────────────────────────────────────
 
 
-def auto_install_realwings_sources(
-    aircraft_dir: Path, target_folder_name: str, also_pull_from: list[str]
-) -> int:
-    """If the user has dropped RealWings3XX/ source folder(s) into the
+def auto_install_realwings_sources(aircraft_dir: Path, target_folder_name: str) -> int:
+    """If the user has dropped a RealWings3XX/ source folder into the
     aircraft base directory, copy any contained files into
     objects/<target_folder_name>/.
 
     The downloaded mod archives nest the actual asset files at varying
     depths (e.g. RealWings321/CEO/RealWings321/Main.obj or
-    RealWings319/RealWings319/Main.obj) — this routine recursively walks
-    each given source folder and copies every file whose *parent
+    RealWings320/NEO/RealWings320/MainNEO.obj) — this routine recursively
+    walks the source folder and copies every file whose *parent
     directory* is named like a `RealWingsNNN` folder.
 
-    `target_folder_name` is the destination subfolder under objects/
+    `target_folder_name` is both the source folder name to look for at the
+    aircraft base directory and the destination subfolder under objects/
     (e.g. 'RealWings321').
-    `also_pull_from` is a list of additional `RealWingsNNN` source-folder
-    names to scan (e.g. for A320 we pull from both RealWings320 and
-    RealWings319 to get the CEO files).
 
     Returns the number of files copied (0 if there was nothing to do).
     """
-    sources_to_scan = [target_folder_name] + list(also_pull_from)
     target_dir = aircraft_dir / "objects" / target_folder_name
 
     pattern = re.compile(r"^RealWings\d{3}$", re.IGNORECASE)
@@ -757,10 +749,8 @@ def auto_install_realwings_sources(
     n_skipped = 0
     scanned_any = False
 
-    for src_name in sources_to_scan:
-        src_root = aircraft_dir / src_name
-        if not src_root.is_dir():
-            continue
+    src_root = aircraft_dir / target_folder_name
+    if src_root.is_dir():
         scanned_any = True
         for path in src_root.rglob("*"):
             if not path.is_file():
@@ -778,7 +768,7 @@ def auto_install_realwings_sources(
 
     if scanned_any:
         print(
-            f"  Source folder(s) found at aircraft base dir; "
+            f"  Source folder found at aircraft base dir; "
             f"copied {n_copied} new file(s), {n_skipped} already up to date."
         )
     return n_copied
@@ -905,12 +895,10 @@ def main() -> None:
     obj_dir = aircraft_dir / "objects"
     realwings_dir = obj_dir / config.realwings_folder
 
-    # ── Auto-install: copy from any RealWings3XX/ folders the user
+    # ── Auto-install: copy from a RealWings3XX/ folder the user
     # has dropped into the aircraft base directory ──
-    # A320 ceo variants need RealWings319 files merged in too.
-    extra_sources = ["RealWings319"] if config.name == "A320" else []
     section("Source File Auto-Install")
-    auto_install_realwings_sources(aircraft_dir, config.realwings_folder, extra_sources)
+    auto_install_realwings_sources(aircraft_dir, config.realwings_folder)
 
     if not realwings_dir.is_dir():
         print(
@@ -931,10 +919,10 @@ def main() -> None:
             f"\nERROR: The following OBJs are missing from {realwings_dir}:\n  "
             + "\n  ".join(missing)
         )
-        if config.name == "A320" and chosen_variant.key.startswith("ceo"):
+        if config.name == "A320":
             print(
-                "\nThe A320 CEO variants need files merged in from the "
-                "RealWings319 mod.  See the readme."
+                "\nThe A320 needs the CEO and NEO sub-folders of the "
+                "RealWings320 mod merged into objects/RealWings320/.  See the readme."
             )
         if config.name == "A321":
             print(

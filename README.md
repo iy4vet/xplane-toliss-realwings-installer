@@ -1,4 +1,4 @@
-# RealWings Installer for ToLiss A319 / A320 / A321 v1.1r1
+# RealWings Installer for ToLiss A319 / A320 / A321 v1.2r1
 
 Installer script for the [RealWings319](https://forums.x-plane.org/files/file/99042-realwings319-wing-replacement-mod-for-toliss-a319/), [RealWings320](https://forums.x-plane.org/files/file/99352-realwings320-wing-replacement-mod-for-toliss-a320neo/) and [RealWings321](https://forums.x-plane.org/files/file/99442-realwings321-wing-replacement-mod-for-toliss-a321neoceo) wing-replacement mods by [GeoBuilds](https://forums.x-plane.org/profile/962966-geobuilds/) and [Durantula2405](https://forums.x-plane.org/profile/843947-durantula2405/). Handles all `.acf` and `.obj` edits so you don't have to do them by hand. If the [Carda engine mod](https://github.com/iy4vet/xplane-toliss-carda-installer) is installed, auto-detects and fixes those coordinates too.
 
@@ -39,7 +39,7 @@ Just unzip the RealWings download into your aircraft folder. The installer finds
 A few things to note per aircraft:
 
 - **A319** - no special steps; drop the zip contents in.
-- **A320** - the mod ships NEO geometry only. For CEO variants, also drop in the **RealWings319** mod; the installer merges both into `objects/RealWings320/`. Skip this if you only want NEO.
+- **A320** - the zip nests assets under `CEO/` and `NEO/` subfolders; just drop the whole `RealWings320/` folder in and the installer handles the merge.
 - **A321** - the zip nests assets under `CEO/` and `NEO/` subfolders; just drop the whole `RealWings321/` folder in and the installer handles the merge.
 
 If a livery ships its own RealWings textures, copy that livery's `objects/RealWings3XX/` folder into the matching livery folder under your aircraft.
@@ -106,5 +106,6 @@ A huge thank-you to:
 
 ## Changelog
 
+- **1.2r1** - RealWings320 now ships its own CEO geometry (elevator positions differ from the A319's), nested in `CEO`/`NEO` subfolders like RealWings321. The A319 merge step for A320 CEO variants is no longer needed - just drop in `RealWings320`.
 - **1.1r1** - fix: re-detect Carda after wing swap (was missed on re-runs)
 - **1.0r1** - Initial release. Unified A319/A320/A321 installer with auto Carda detection, auto-copy of source folders, and content-based OBJ edits (no hard-coded line numbers).
