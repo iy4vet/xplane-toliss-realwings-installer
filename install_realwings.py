@@ -806,6 +806,24 @@ def ask_choice(prompt: str, options: list[tuple[str, str]]) -> str:
 # ─── Main ─────────────────────────────────────────────────────────────────────
 
 
+def app_dir() -> Path:
+    """Folder holding this script, or the binary when run as a PyInstaller
+    build (where __file__ points into a temporary extraction folder)."""
+    if getattr(sys, "frozen", False):
+        return Path(sys.executable).resolve().parent
+    return Path(__file__).resolve().parent
+
+
+def default_aircraft_dir() -> Path:
+    """The current folder if it holds .acf files, else the installer's own
+    folder. Double-clicking the binary in macOS Finder runs it from the user's
+    home folder rather than the folder it sits in, so cwd alone isn't enough."""
+    for candidate in (Path.cwd(), app_dir()):
+        if any(candidate.glob("*.acf")):
+            return candidate
+    return Path.cwd()
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="RealWings ACF/OBJ editor for ToLiss A319 / A320 / A321"
@@ -813,8 +831,9 @@ def main() -> None:
     parser.add_argument(
         "--aircraft-dir",
         type=Path,
-        default=Path.cwd(),
-        help="Path to the ToLiss aircraft folder (default: current directory)",
+        default=default_aircraft_dir(),
+        help="Path to the ToLiss aircraft folder "
+        "(default: current directory, or the installer's own folder)",
     )
     parser.add_argument(
         "--aircraft",
