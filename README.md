@@ -106,6 +106,7 @@ A huge thank-you to:
 
 ## Changelog
 
+- **1.3r1** - Glass/GlassNEO now use the "All Views" shadow mode like the other wing parts, instead of Glass lighting (the updated RealWings Glass object now includes regular meshes). Fix: macOS binaries not finding the .acf files when launched from Finder (they now also look in the folder the installer sits in).
 - **1.2r1** - RealWings320 now ships its own CEO geometry (elevator positions differ from the A319's), nested in `CEO`/`NEO` subfolders like RealWings321. The A319 merge step for A320 CEO variants is no longer needed - just drop in `RealWings320`.
 - **1.1r1** - fix: re-detect Carda after wing swap (was missed on re-runs)
 - **1.0r1** - Initial release. Unified A319/A320/A321 installer with auto Carda detection, auto-copy of source folders, and content-based OBJ edits (no hard-coded line numbers).
