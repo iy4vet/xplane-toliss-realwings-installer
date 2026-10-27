@@ -1,4 +1,4 @@
-# RealWings Installer for ToLiss A319 / A320 / A321 v1.2r1
+# RealWings Installer for ToLiss A319 / A320 / A321 v1.3r1
 
 Installer script for the [RealWings319](https://forums.x-plane.org/files/file/99042-realwings319-wing-replacement-mod-for-toliss-a319/), [RealWings320](https://forums.x-plane.org/files/file/99352-realwings320-wing-replacement-mod-for-toliss-a320neo/) and [RealWings321](https://forums.x-plane.org/files/file/99442-realwings321-wing-replacement-mod-for-toliss-a321neoceo) wing-replacement mods by [GeoBuilds](https://forums.x-plane.org/profile/962966-geobuilds/) and [Durantula2405](https://forums.x-plane.org/profile/843947-durantula2405/). Handles all `.acf` and `.obj` edits so you don't have to do them by hand. If the [Carda engine mod](https://github.com/iy4vet/xplane-toliss-carda-installer) is installed, auto-detects and fixes those coordinates too.
 

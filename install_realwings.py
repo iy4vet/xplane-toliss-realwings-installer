@@ -57,7 +57,6 @@ from pathlib import Path
 #   lighting:  +1 Inside, +2 Glass(outside)
 FLAGS_SHADOW_ALL_VIEWS = 24  # All Views + High Res shadow
 FLAGS_LIGHT_INSIDE = 1  # no shadow, inside-light
-FLAGS_LIGHT_GLASS_OUTSIDE = 2  # no shadow, glass-outside light
 
 # Wing object placement (per RealWings ReadMe):
 #   Main / Flaps / Secondary / Glass:  LONG=72.30 LAT=0.00  VERT=0.40
@@ -329,15 +328,19 @@ def build_realwings_objects(
     """Build the list of ACF objects to add for the chosen variant."""
     folder = config.realwings_folder
 
-    # Body OBJs:
-    #   * Glass / GlassNEO use the Glass-outside lighting flag (no shadow).
-    #   * Everything else (Main, Secondary, Flaps) uses All Views shadow.
+    # Body OBJs (Main, Glass, Secondary) all use All Views shadow. Glass
+    # used to take the Glass-outside lighting flag, but it now carries
+    # regular meshes too.
     objects: list[ACFObject] = []
     for basename in variant.body_objs:
-        is_glass = basename.lower().startswith("glass")
-        flags = FLAGS_LIGHT_GLASS_OUTSIDE if is_glass else FLAGS_SHADOW_ALL_VIEWS
         objects.append(
-            ACFObject(f"{folder}/{basename}", flags, x=WING_X, y=WING_Y, z=WING_Z)
+            ACFObject(
+                f"{folder}/{basename}",
+                FLAGS_SHADOW_ALL_VIEWS,
+                x=WING_X,
+                y=WING_Y,
+                z=WING_Z,
+            )
         )
 
     # Flaps
@@ -857,7 +860,7 @@ def main() -> None:
     aircraft_dir: Path = args.aircraft_dir.resolve()
 
     print("=" * SEPARATOR_WIDTH)
-    print(" RealWings Mod - ACF/OBJ Editor v1.0r1")
+    print(" RealWings Mod - ACF/OBJ Editor v1.3r1")
     print("=" * SEPARATOR_WIDTH)
 
     # ── Aircraft selection ──
